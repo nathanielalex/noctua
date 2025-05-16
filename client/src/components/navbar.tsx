@@ -1,4 +1,3 @@
-import { Moon } from "lucide-react";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 // import MobileNav from "./MobileNav"; // Replace with the correct path to your MobileNav component
 import { Button } from "./ui/button";
