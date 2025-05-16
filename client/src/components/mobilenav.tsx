@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Button } from "./ui/button";
-import { Menu, Moon, X } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Menu, X } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate()
 
   return (
     <div className="md:hidden">
@@ -15,8 +16,12 @@ export default function MobileNav() {
       {isOpen && (
         <div className="fixed inset-0 z-50 bg-white">
           <div className="flex h-16 items-center justify-between px-4">
-            <div className="flex items-center gap-2">
-              <Moon className="h-6 w-6 text-[#A8D0E6]" />
+            <div className="flex items-center gap-2" onClick={() => (navigate('/'))}>
+              <img
+                src="/logo.png"
+                alt="Noctua"
+                className="w-10 h-auto object-contain"
+              />
               <span className="text-xl font-bold text-[#333333]">
                 DriveSafe
               </span>
@@ -32,35 +37,28 @@ export default function MobileNav() {
           </div>
           <nav className="grid gap-2 px-4 py-4">
             <Link
-              to="#features"
+              to="/features"
               className="flex items-center py-2 text-lg font-medium text-[#333333] hover:text-[#00B8D9]"
               onClick={() => setIsOpen(false)}
             >
               Features
             </Link>
             <Link
-              to="#how-it-works"
+              to="/how-it-works"
               className="flex items-center py-2 text-lg font-medium text-[#333333] hover:text-[#00B8D9]"
               onClick={() => setIsOpen(false)}
             >
               How It Works
             </Link>
             <Link
-              to="#safety"
+              to="/safety"
               className="flex items-center py-2 text-lg font-medium text-[#333333] hover:text-[#00B8D9]"
               onClick={() => setIsOpen(false)}
             >
               Safety
             </Link>
-            <Link
-              to="#download"
-              className="flex items-center py-2 text-lg font-medium text-[#333333] hover:text-[#00B8D9]"
-              onClick={() => setIsOpen(false)}
-            >
-              Download
-            </Link>
             <div className="pt-4">
-              <Button className="w-full bg-[#00B8D9] hover:bg-[#00B8D9]/90 text-white">
+              <Button className="w-full bg-[#00B8D9] hover:bg-[#00B8D9]/90 text-white" onClick={() => (navigate('/monitor'))}>
                 Download App
               </Button>
             </div>

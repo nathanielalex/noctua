@@ -40,6 +40,7 @@ export default function LandingPage() {
                   <Button
                     variant="outline"
                     className="border-[#A8D0E6] text-[#333333]"
+                    onClick={() => navigate('/how-it-works')}
                   >
                     Learn More
                   </Button>
@@ -184,7 +185,7 @@ export default function LandingPage() {
                   </p>
                 </div>
                 <div>
-                  <Button className="bg-[#00B8D9] hover:bg-[#00B8D9]/90 text-white">
+                  <Button className="bg-[#00B8D9] hover:bg-[#00B8D9]/90 text-white" onClick={() => navigate('/how-it-works')}>
                     Learn About Our Technology
                   </Button>
                 </div>
