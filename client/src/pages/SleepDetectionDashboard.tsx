@@ -106,16 +106,45 @@ const SleepDetectionDashboard: React.FC = () => {
       canvas.width = video.clientWidth;
       canvas.height = video.clientHeight;
 
+      // const videoWidth = video.videoWidth;
+      // const videoHeight = video.videoHeight;
+
       // Clear previous drawings
       context.clearRect(0, 0, canvas.width, canvas.height);
 
       // Draw detections
       detections.forEach((detection: Detection) => {
-        const [x, y, width, height] = detection.bbox;
-        const scaledX = (x / 640) * canvas.width;
-        const scaledY = (y / 480) * canvas.height;
-        const scaledWidth = (width / 640) * canvas.width;
-        const scaledHeight = (height / 480) * canvas.height;
+        const [xmin, ymin, xmax, ymax] = detection.bbox;
+        // const scaledX = (xmin / video.videoWidth) * canvas.width;
+        // const scaledY = (ymin / video.videoHeight) * canvas.height;
+        // const scaledWidth = ((xmax - xmin) / video.videoWidth) * canvas.width;
+        // const scaledHeight = ((ymax - ymin) / video.videoHeight) * canvas.height;
+        // Assume the visible canvas matches aspect ratio of 640x480
+        const aspectRatio = 640 / 480;
+        const canvasAR = canvas.width / canvas.height;
+
+        let cropX = 0, cropY = 0;
+        let scaleX = 1, scaleY = 1;
+
+        if (canvasAR > aspectRatio) {
+          // Canvas is wider → vertical bars cropped
+          const expectedHeight = canvas.width / aspectRatio;
+          cropY = (canvas.height - expectedHeight) / 2;
+          scaleX = canvas.width / 640;
+          scaleY = expectedHeight / 480;
+        } else {
+          // Canvas is taller → horizontal bars cropped
+          const expectedWidth = canvas.height * aspectRatio;
+          cropX = (canvas.width - expectedWidth) / 2;
+          scaleX = expectedWidth / 640;
+          scaleY = canvas.height / 480;
+        }
+
+        const scaledX = xmin * scaleX + cropX;
+        const scaledY = ymin * scaleY + cropY;
+        const scaledWidth = (xmax - xmin) * scaleX;
+        const scaledHeight = (ymax - ymin) * scaleY;
+
 
         // Draw bounding box
         context.strokeStyle =
@@ -152,13 +181,13 @@ const SleepDetectionDashboard: React.FC = () => {
   return (
     <Layout>
 
-      <div className="flex flex-col items-center w-full mx-auto p-4 bg-[#F0F0F0] min-h-screen text-[#333333] py-10">
+      <div className="flex flex-col items-center w-full mx-auto p-4 bg-gradient-to-br from-[#00B8D9] to-[#FF6F00] min-h-screen text-[#333333] py-10">
         <header className="w-full text-center mb-8">
-          <h1 className="text-3xl font-bold" style={{color: '#A8D0E6'}}>Driver Sleep Detection System</h1>
-          <p className="text-[#333333] mt-2">Real-time drowsiness monitoring for safer driving</p>
+          <h1 className="text-3xl font-bold text-white mb-2 drop-shadow-lg">Driver Sleep Detection System</h1>
+          <p className="text-white/90 mt-2">Real-time drowsiness monitoring for safer driving</p>
         </header>
         
-        <div className="w-full max-w-2xl bg-white rounded-lg shadow-md p-6 mb-8" style={{backgroundColor: '#FFFFFF'}}>
+        <div className="w-full max-w-2xl bg-white/20 backdrop-blur-md rounded-lg shadow-xl p-6 mb-8 border border-white/10">
           <div className="relative w-full h-[70vh] aspect-video rounded overflow-hidden" style={{backgroundColor: '#A8D0E6'}}>
             {/* Video feed */}
             <video 
@@ -196,10 +225,10 @@ const SleepDetectionDashboard: React.FC = () => {
           <div className="mt-4 flex justify-between items-center">
             <button
               onClick={toggleMonitoring}
-              className={`px-6 py-2 rounded-lg font-medium text-white ${
+              className={`px-6 py-2 rounded-lg font-medium text-white shadow-lg ${
                 isActive 
-                  ? 'bg-[#D32F2F] hover:bg-red-700' 
-                  : 'bg-[#00B8D9] hover:bg-teal-700'
+                  ? 'bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700' 
+                  : 'bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600'
               }`}
             >
               {isActive ? 'Stop Monitoring' : 'Start Monitoring'}
@@ -219,8 +248,8 @@ const SleepDetectionDashboard: React.FC = () => {
         </div>
         
         {/* Detection details panel */}
-        <div className="w-full max-w-2xl bg-white rounded-lg shadow-md p-6" style={{backgroundColor: '#FFFFFF'}}>
-          <h2 className="text-xl font-bold mb-4" style={{color: '#A8D0E6'}}>Detection Details</h2>
+        <div className="w-full max-w-2xl bg-white/20 backdrop-blur-md rounded-lg shadow-xl p-6 border border-white/10">
+          <h2 className="text-xl font-bold mb-4 text-white">Detection Details</h2>
           
           {error && (
             <div className="p-3 bg-[#D32F2F] text-white rounded mb-4">
@@ -231,18 +260,18 @@ const SleepDetectionDashboard: React.FC = () => {
           {detections.length > 0 ? (
             <div className="space-y-4">
               {detections.map((detection: Detection, index: number) => (
-                <div key={index} className="p-4 border rounded-lg" style={{backgroundColor: '#F0F0F0'}}>
+                <div key={index} className="p-4 border border-white/20 rounded-lg bg-white/10 backdrop-blur-sm">
                   <div className="flex justify-between">
                     <span className="font-medium">Detection {index + 1}:</span>
                     <span className={`font-bold ${
                       detection.label === 'sleepy' 
-                        ? 'text-[#D32F2F]' 
-                        : 'text-[#00B8D9]'
+                        ? 'text-red-300' 
+                        : 'text-cyan-300'
                     }`}>
                       {detection.label.toUpperCase()}
                     </span>
                   </div>
-                  <div className="mt-2 text-sm text-[#333333]">
+                  <div className="mt-2 text-sm text-white/80">
                     <div className="text-[#FF6F00]">Confidence: {Math.round(detection.confidence * 100)}%</div>
                     <div>Position: x={detection.bbox[0]}, y={detection.bbox[1]}</div>
                     <div>Size: width={detection.bbox[2]}, height={detection.bbox[3]}</div>
@@ -251,9 +280,9 @@ const SleepDetectionDashboard: React.FC = () => {
               ))}
             </div>
           ) : isActive ? (
-            <p className="text-[#333333]">No detections at the moment...</p>
+            <p className="text-white/80">No detections at the moment...</p>
           ) : (
-            <p className="text-[#333333]">Start monitoring to see detection data</p>
+            <p className="text-white/80">Start monitoring to see detection data</p>
           )}
         </div>
       </div>
