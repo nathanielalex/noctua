@@ -26,8 +26,8 @@ export default function LandingPage() {
                     Stay Awake. Stay Safe.
                   </h1>
                   <p className="max-w-[600px] text-[#333333] md:text-xl">
-                    Noctua detects signs of drowsiness while driving and
-                    alerts you before it's too late.
+                    Noctua detects signs of drowsiness while driving and alerts
+                    you before it's too late.
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
@@ -40,7 +40,7 @@ export default function LandingPage() {
                   <Button
                     variant="outline"
                     className="border-[#A8D0E6] text-[#333333]"
-                    onClick={() => navigate('/how-it-works')}
+                    onClick={() => navigate("/how-it-works")}
                   >
                     Learn More
                   </Button>
@@ -80,17 +80,17 @@ export default function LandingPage() {
               <FeatureCard
                 icon={<Bell className="h-10 w-10 text-[#FFB400]" />}
                 title="Smart Alerts"
-                description="Receive timely audio and visual alerts when signs of drowsiness are detected."
+                description="Receive timely audio alerts when signs of drowsiness are detected."
               />
               <FeatureCard
                 icon={<Shield className="h-10 w-10 text-[#00B8D9]" />}
                 title="Privacy First"
-                description="All processing happens on your device. No video data is ever uploaded or stored."
+                description="No video data is ever uploaded or stored."
               />
               <FeatureCard
                 icon={<Car className="h-10 w-10 text-[#FF6F00]" />}
-                title="Works Offline"
-                description="No internet connection required. Works anywhere, anytime you drive."
+                title="Simple"
+                description="Just visit our website without having to login."
               />
             </div>
           </div>
@@ -174,9 +174,9 @@ export default function LandingPage() {
                     Safety is Our Priority
                   </h2>
                   <p className="text-[#333333] md:text-xl">
-                    Drowsy driving is as dangerous as drunk driving. Noctua
-                    uses advanced AI to detect the early signs of drowsiness
-                    before an accident can happen.
+                    Drowsy driving is as dangerous as drunk driving. Noctua uses
+                    advanced AI to detect the early signs of drowsiness before
+                    an accident can happen.
                   </p>
                   <p className="text-[#333333] md:text-xl">
                     Our technology monitors eye movement, blink rate, head
@@ -185,7 +185,10 @@ export default function LandingPage() {
                   </p>
                 </div>
                 <div>
-                  <Button className="bg-[#00B8D9] hover:bg-[#00B8D9]/90 text-white" onClick={() => navigate('/how-it-works')}>
+                  <Button
+                    className="bg-[#00B8D9] hover:bg-[#00B8D9]/90 text-white"
+                    onClick={() => navigate("/how-it-works")}
+                  >
                     Learn About Our Technology
                   </Button>
                 </div>

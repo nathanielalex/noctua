@@ -291,8 +291,8 @@ const SleepDetectionDashboard: React.FC = () => {
                   </div>
                   <div className="mt-2 text-md font-medium text-white drop-shadow-sm">
                     <div className="text-orange-100">Confidence: {Math.round(detection.confidence * 100)}%</div>
-                    <div>Position: x={detection.bbox[0]}, y={detection.bbox[1]}</div>
-                    <div>Size: width={detection.bbox[2]}, height={detection.bbox[3]}</div>
+                    <div>Position x: x1={detection.bbox[0]}, x2={detection.bbox[2]}</div>
+                    <div>Position y: y1={detection.bbox[1]}, y2={detection.bbox[3]}</div>
                   </div>
                 </div>
               ))}

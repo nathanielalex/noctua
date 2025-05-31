@@ -7,7 +7,10 @@ const Navbar: React.FC = () => {
   return (
     <div className="sticky top-0 z-40 w-full border-b bg-white">
       <div className="container flex h-16 items-center justify-between px-4 md:px-6">
-        <div className="flex items-center gap-2 cursor-pointer" onClick={() => (navigate('/'))}>
+        <div
+          className="flex items-center gap-2 cursor-pointer"
+          onClick={() => navigate("/")}
+        >
           <img
             src="/logo.png"
             alt="Noctua"
@@ -16,12 +19,6 @@ const Navbar: React.FC = () => {
           <span className="text-xl font-bold text-[#333333]">Noctua</span>
         </div>
         <nav className="hidden md:flex gap-6">
-          <Link
-            to="/features"
-            className="text-sm font-medium text-[#333333] hover:text-[#00B8D9]"
-          >
-            Features
-          </Link>
           <Link
             to="/how-it-works"
             className="text-sm font-medium text-[#333333] hover:text-[#00B8D9]"
@@ -34,10 +31,19 @@ const Navbar: React.FC = () => {
           >
             Safety
           </Link>
+          <Link
+            to="/about"
+            className="text-sm font-medium text-[#333333] hover:text-[#00B8D9]"
+          >
+            About
+          </Link>
         </nav>
         <MobileNav />
         <div className="hidden md:block">
-          <Button className="bg-[#00B8D9] hover:bg-[#00B8D9]/90 text-white cursor-pointer" onClick={() => (navigate('/monitor'))}>
+          <Button
+            className="bg-[#00B8D9] hover:bg-[#00B8D9]/90 text-white cursor-pointer"
+            onClick={() => navigate("/monitor")}
+          >
             Try Now
           </Button>
         </div>

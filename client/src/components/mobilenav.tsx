@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 export default function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <div className="md:hidden">
@@ -16,7 +16,10 @@ export default function MobileNav() {
       {isOpen && (
         <div className="fixed inset-0 z-50 bg-white">
           <div className="flex h-16 items-center justify-between px-4">
-            <div className="flex items-center gap-2" onClick={() => (navigate('/'))}>
+            <div
+              className="flex items-center gap-2"
+              onClick={() => navigate("/")}
+            >
               <img
                 src="/logo.png"
                 alt="Noctua"
@@ -37,13 +40,6 @@ export default function MobileNav() {
           </div>
           <nav className="grid gap-2 px-4 py-4">
             <Link
-              to="/features"
-              className="flex items-center py-2 text-lg font-medium text-[#333333] hover:text-[#00B8D9]"
-              onClick={() => setIsOpen(false)}
-            >
-              Features
-            </Link>
-            <Link
               to="/how-it-works"
               className="flex items-center py-2 text-lg font-medium text-[#333333] hover:text-[#00B8D9]"
               onClick={() => setIsOpen(false)}
@@ -57,8 +53,18 @@ export default function MobileNav() {
             >
               Safety
             </Link>
+            <Link
+              to="/about"
+              className="flex items-center py-2 text-lg font-medium text-[#333333] hover:text-[#00B8D9]"
+              onClick={() => setIsOpen(false)}
+            >
+              About
+            </Link>
             <div className="pt-4">
-              <Button className="w-full bg-[#00B8D9] hover:bg-[#00B8D9]/90 text-white" onClick={() => (navigate('/monitor'))}>
+              <Button
+                className="w-full bg-[#00B8D9] hover:bg-[#00B8D9]/90 text-white"
+                onClick={() => navigate("/monitor")}
+              >
                 Download App
               </Button>
             </div>
