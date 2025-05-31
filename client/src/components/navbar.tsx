@@ -37,7 +37,7 @@ const Navbar: React.FC = () => {
         </nav>
         <MobileNav />
         <div className="hidden md:block">
-          <Button className="bg-[#00B8D9] hover:bg-[#00B8D9]/90 text-white" onClick={() => (navigate('/monitor'))}>
+          <Button className="bg-[#00B8D9] hover:bg-[#00B8D9]/90 text-white cursor-pointer" onClick={() => (navigate('/monitor'))}>
             Try Now
           </Button>
         </div>

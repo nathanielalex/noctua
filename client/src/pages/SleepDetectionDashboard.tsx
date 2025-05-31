@@ -243,7 +243,7 @@ const SleepDetectionDashboard: React.FC = () => {
           <div className="mt-4 flex justify-between items-center">
             <button
               onClick={toggleMonitoring}
-              className={`px-6 py-2 rounded-lg font-medium text-white shadow-lg ${
+              className={`px-6 py-2 rounded-lg font-medium text-white shadow-lg cursor-pointer ${
                 isActive 
                   ? 'bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700' 
                   : 'bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600'
@@ -259,7 +259,7 @@ const SleepDetectionDashboard: React.FC = () => {
                   ALERT: Drowsiness Detected!
                 </div>
               ) : isActive ? (
-                <div className="text-[#FFB400]">Driver Alert</div>
+                <div className="text-yellow-100">Driver Alert</div>
               ) : null}
             </div>
           </div>
@@ -280,17 +280,17 @@ const SleepDetectionDashboard: React.FC = () => {
               {detections.map((detection: Detection, index: number) => (
                 <div key={index} className="p-4 border border-white/20 rounded-lg bg-white/10 backdrop-blur-sm">
                   <div className="flex justify-between">
-                    <span className="font-medium">Detection {index + 1}:</span>
-                    <span className={`font-bold ${
-                      detection.label === 'sleepy' 
-                        ? 'text-red-300' 
-                        : 'text-cyan-300'
-                    }`}>
+                    <span className="text-md font-medium text-white drop-shadow-sm">Detection {index + 1}:</span>
+                    <span
+                      className={`font-bold text-white px-3 py-1 rounded-md ${
+                        detection.label === 'sleepy' ? 'bg-red-500' : 'bg-cyan-500'
+                      }`}
+                    >
                       {detection.label.toUpperCase()}
                     </span>
                   </div>
-                  <div className="mt-2 text-sm text-white/80">
-                    <div className="text-[#FF6F00]">Confidence: {Math.round(detection.confidence * 100)}%</div>
+                  <div className="mt-2 text-md font-medium text-white drop-shadow-sm">
+                    <div className="text-orange-100">Confidence: {Math.round(detection.confidence * 100)}%</div>
                     <div>Position: x={detection.bbox[0]}, y={detection.bbox[1]}</div>
                     <div>Size: width={detection.bbox[2]}, height={detection.bbox[3]}</div>
                   </div>
