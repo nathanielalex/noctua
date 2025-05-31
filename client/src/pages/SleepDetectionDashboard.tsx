@@ -88,6 +88,13 @@ const SleepDetectionDashboard: React.FC = () => {
         tracks.forEach((track) => track.stop());
         videoRef.current.srcObject = null;
       }
+
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+        // console.log('turning off')
+      }
+
       setIsActive(false);
       setDetections([]);
     }
@@ -165,17 +172,28 @@ const SleepDetectionDashboard: React.FC = () => {
     }
   }, [detections]);
 
+  const prevSleepyRef = useRef(false);
+  const lastAlertTimeRef = useRef<number | null>(null); // Timestamp of last alert
+  const ALERT_COOLDOWN_MS = 10000; // 10 seconds
   // Play alert sound if sleepy detection is made
   useEffect(() => {
+    const now = Date.now();
     const hasSleepyDetection = detections.some(
       (d: Detection) => d.label === "sleepy" && d.confidence > 0.7
     );
+    const shouldPlayAudio =
+    prevSleepyRef.current && hasSleepyDetection &&
+    (!lastAlertTimeRef.current || now - lastAlertTimeRef.current > ALERT_COOLDOWN_MS);
 
-    if (hasSleepyDetection) {
-      // Play alert sound
+    if (shouldPlayAudio) {
       const audio = new Audio("/alert-sound.mp3");
-      audio.play().catch((e) => console.error("Audio error:", e));
+      audio.play().then(() => {
+        lastAlertTimeRef.current = Date.now(); // Update timestamp on successful play
+      }).catch((e) => {
+        console.error("Audio error:", e);
+      });
     }
+    prevSleepyRef.current = hasSleepyDetection;
   }, [detections]);
 
   return (
