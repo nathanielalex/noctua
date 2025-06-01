@@ -183,7 +183,7 @@ const SleepDetectionDashboard: React.FC = () => {
   useEffect(() => {
     const now = Date.now();
     const hasSleepyDetection = detections.some(
-      (d: Detection) => d.label === "sleepy" && d.confidence > 0.7
+      (d: Detection) => d.label === "sleepy" && d.confidence > 0.65
     );
     if (hasSleepyDetection) {
       setDetectionCount((prevCount) => prevCount + 1);
@@ -271,7 +271,7 @@ const SleepDetectionDashboard: React.FC = () => {
 
             <div className="text-right">
               {detections.some(
-                (d) => d.label === "sleepy" && d.confidence > 0.7
+                (d) => d.label === "sleepy" && d.confidence > 0.65
               ) ? (
                 <div className="text-[#D32F2F] font-bold animate-pulse">
                   ALERT: Drowsiness!

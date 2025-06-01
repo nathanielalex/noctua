@@ -9,38 +9,38 @@ import base64  # Import base64 modul
 
 app = Flask(__name__)
 
-# Enable CORS for all routes
 CORS(app)
 
-# Load YOLO model
-model = YOLO('my_model.pt')
+model = YOLO('new_model.pt')
 
 @app.route('/detect', methods=['POST'])
 def detect():
-    # Get image from the frontend (base64-encoded)
+    #get image from the frontend (base64-encoded)
     data = request.get_json()
     image_data = data['image']
     img_bytes = io.BytesIO(base64.b64decode(image_data.split(',')[1]))  # Remove 'data:image/jpeg;base64,' part
     img = Image.open(img_bytes)
     img = np.array(img)
 
-    # Run YOLO model on the image
+    #infer image
     results = model(img)
-    detections = []
+    best_detection = None
+    max_conf = -1
 
-    # Extract detection results
     for det in results[0].boxes:
-        bbox = det.xyxy.cpu().numpy().astype(int)[0]  # Get coordinates of bounding box
-        class_id = int(det.cls.item())  # Get class ID
-        conf = det.conf.item()  # Get confidence
-        label = model.names[class_id]  # Get class name
+        conf = det.conf.item()
+        if conf > max_conf:
+            bbox = det.xyxy.cpu().numpy().astype(int)[0]
+            class_id = int(det.cls.item())
+            label = model.names[class_id]
 
-        detections.append({
-            'bbox': bbox.tolist(),
-            'label': label,
-            'confidence': conf
-        })
-
+            best_detection = {
+                'bbox': bbox.tolist(),
+                'label': label,
+                'confidence': conf
+            }
+            max_conf = conf
+    detections = [best_detection] if best_detection else []
     return jsonify({'detections': detections})
 
 if __name__ == '__main__':
