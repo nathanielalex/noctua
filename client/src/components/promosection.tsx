@@ -16,14 +16,14 @@ export default function PromoSection() {
         </div>
         <div className="flex flex-col gap-4 min-[400px]:flex-row">
           <Button
-            className="bg-[#00B8D9] hover:bg-[#00B8D9]/90 text-white h-14 px-8"
+            className="bg-[#00B8D9] hover:bg-[#00B8D9]/90 text-white h-14 px-8 cursor-pointer"
             onClick={() => navigate("/monitor")}
           >
             Try Noctua
           </Button>
           <Button
             variant="outline"
-            className="border-[#A8D0E6] text-[#333333] h-14 px-8"
+            className="border-[#A8D0E6] text-[#333333] h-14 px-8 cursor-pointer"
             onClick={() => navigate("/how-it-works")}
           >
             Learn How It Works

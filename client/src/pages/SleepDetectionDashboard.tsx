@@ -1,11 +1,10 @@
 import Layout from "@/components/Layout";
 import DrowsinessStatsModal from "@/components/statmodal";
-import { dummyStats } from "@/lib/data";
 import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
 
 interface Detection {
-  bbox: [number, number, number, number]; // [x, y, width, height]
+  bbox: [number, number, number, number]; // [xmin, ymin, xmax, ymax]
   label: string;
   confidence: number;
 }
@@ -19,6 +18,9 @@ const SleepDetectionDashboard: React.FC = () => {
   const [isLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isActive, setIsActive] = useState<boolean>(false);
+  const [startTime, setStartTime] = useState(0);
+  const [durationMs, setDurationMs] = useState(0);
+  const [detectionCount, setDetectionCount] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -56,13 +58,12 @@ const SleepDetectionDashboard: React.FC = () => {
       canvas.width = videoRef.current.videoWidth;
       canvas.height = videoRef.current.videoHeight;
       context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-      return canvas.toDataURL("image/jpeg"); // Convert to base64
+      return canvas.toDataURL("image/jpeg"); //convert to base64
     }
 
     return "";
   };
 
-  // Start/stop monitoring
   const toggleMonitoring = async (): Promise<void> => {
     if (!isActive) {
       try {
@@ -74,13 +75,14 @@ const SleepDetectionDashboard: React.FC = () => {
             videoRef.current.srcObject = stream;
           }
           setIsActive(true);
-
+          setStartTime(Date.now());
+          setDetectionCount(0);
           intervalRef.current = setInterval(() => {
-            const base64Image = captureFrame(); // Capture the current frame as base64
+            const base64Image = captureFrame(); //capture the current frame as base64
             if (base64Image) {
-              fetchSleepDetection(base64Image); // Send the captured frame to the backend
+              fetchSleepDetection(base64Image); //send the captured frame to the backend
             }
-          }, 1000); // Adjust interval time
+          }, 1000); //interval time
         }
       } catch (err) {
         setError("Cannot access camera");
@@ -98,13 +100,17 @@ const SleepDetectionDashboard: React.FC = () => {
         intervalRef.current = null;
         // console.log('turning off')
       }
+      if (startTime) {
+        const endTime = Date.now();
+        setDurationMs(endTime - startTime);
+      }
       setModalOpen(true);
       setIsActive(false);
       setDetections([]);
     }
   };
 
-  // Draw bounding boxes on canvas when detections change
+  //draw bounding boxes on canvas when detections change
   useEffect(() => {
     if (canvasRef.current && videoRef.current && detections.length > 0) {
       const canvas = canvasRef.current;
@@ -113,24 +119,16 @@ const SleepDetectionDashboard: React.FC = () => {
 
       if (!context) return;
 
-      // Match canvas size to video
+      //match canvas size to video
       canvas.width = video.clientWidth;
       canvas.height = video.clientHeight;
 
-      // const videoWidth = video.videoWidth;
-      // const videoHeight = video.videoHeight;
-
-      // Clear previous drawings
+      //clear previous drawings
       context.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Draw detections
+      //draw detections
       detections.forEach((detection: Detection) => {
         const [xmin, ymin, xmax, ymax] = detection.bbox;
-        // const scaledX = (xmin / video.videoWidth) * canvas.width;
-        // const scaledY = (ymin / video.videoHeight) * canvas.height;
-        // const scaledWidth = ((xmax - xmin) / video.videoWidth) * canvas.width;
-        // const scaledHeight = ((ymax - ymin) / video.videoHeight) * canvas.height;
-        // Assume the visible canvas matches aspect ratio of 640x480
         const aspectRatio = 640 / 480;
         const canvasAR = canvas.width / canvas.height;
 
@@ -140,13 +138,13 @@ const SleepDetectionDashboard: React.FC = () => {
           scaleY = 1;
 
         if (canvasAR > aspectRatio) {
-          // Canvas is wider → vertical bars cropped
+          //canvas is wider means vertical bars cropped
           const expectedHeight = canvas.width / aspectRatio;
           cropY = (canvas.height - expectedHeight) / 2;
           scaleX = canvas.width / 640;
           scaleY = expectedHeight / 480;
         } else {
-          // Canvas is taller → horizontal bars cropped
+          //canvas is taller means horizontal bars cropped
           const expectedWidth = canvas.height * aspectRatio;
           cropX = (canvas.width - expectedWidth) / 2;
           scaleX = expectedWidth / 640;
@@ -158,13 +156,13 @@ const SleepDetectionDashboard: React.FC = () => {
         const scaledWidth = (xmax - xmin) * scaleX;
         const scaledHeight = (ymax - ymin) * scaleY;
 
-        // Draw bounding box
+        //draw bounding box
         context.strokeStyle =
           detection.label === "sleepy" ? "#ff0000" : "#00ff00";
         context.lineWidth = 3;
         context.strokeRect(scaledX, scaledY, scaledWidth, scaledHeight);
 
-        // Draw label
+        //draw label
         context.fillStyle =
           detection.label === "sleepy" ? "#ff0000" : "#00ff00";
         context.font = "18px Arial";
@@ -178,14 +176,18 @@ const SleepDetectionDashboard: React.FC = () => {
   }, [detections]);
 
   const prevSleepyRef = useRef(false);
-  const lastAlertTimeRef = useRef<number | null>(null); // Timestamp of last alert
+  const lastAlertTimeRef = useRef<number | null>(null);
   const ALERT_COOLDOWN_MS = 10000; // 10 seconds
-  // Play alert sound if sleepy detection is made
+
+  //play alert sound if sleepy detection is made
   useEffect(() => {
     const now = Date.now();
     const hasSleepyDetection = detections.some(
       (d: Detection) => d.label === "sleepy" && d.confidence > 0.7
     );
+    if (hasSleepyDetection) {
+      setDetectionCount((prevCount) => prevCount + 1);
+    }
     const shouldPlayAudio =
       prevSleepyRef.current &&
       hasSleepyDetection &&
@@ -197,7 +199,7 @@ const SleepDetectionDashboard: React.FC = () => {
       audio
         .play()
         .then(() => {
-          lastAlertTimeRef.current = Date.now(); // Update timestamp on successful play
+          lastAlertTimeRef.current = Date.now(); //update timestamp on successful play
         })
         .catch((e) => {
           console.error("Audio error:", e);
@@ -255,7 +257,6 @@ const SleepDetectionDashboard: React.FC = () => {
             )}
           </div>
 
-          {/* Controls */}
           <div className="mt-4 flex justify-between items-center">
             <button
               onClick={toggleMonitoring}
@@ -268,13 +269,12 @@ const SleepDetectionDashboard: React.FC = () => {
               {isActive ? "Stop Monitoring" : "Start Monitoring"}
             </button>
 
-            {/* Status message */}
             <div className="text-right">
               {detections.some(
                 (d) => d.label === "sleepy" && d.confidence > 0.7
               ) ? (
                 <div className="text-[#D32F2F] font-bold animate-pulse">
-                  ALERT: Drowsiness Detected!
+                  ALERT: Drowsiness!
                 </div>
               ) : isActive ? (
                 <div className="text-yellow-100">Driver Alert</div>
@@ -283,7 +283,6 @@ const SleepDetectionDashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Detection details panel */}
         <div className="w-full max-w-2xl bg-white/20 backdrop-blur-md rounded-lg shadow-xl p-6 border border-white/10">
           <h2 className="text-xl font-bold mb-4 text-white">
             Detection Details
@@ -342,7 +341,7 @@ const SleepDetectionDashboard: React.FC = () => {
       <DrowsinessStatsModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
-        stats={dummyStats}
+        stats={{ totalEvents: detectionCount, drivingDuration: durationMs }}
       />
     </Layout>
   );

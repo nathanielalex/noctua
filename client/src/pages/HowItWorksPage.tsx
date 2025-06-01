@@ -5,7 +5,7 @@ import PromoSection from "@/components/promosection";
 
 const images = [
   "https://editorial.pxcrush.net/carsales/general/editorial/suction_phone_mount.jpg?width=1024&height=682",
-  "step2.jpg",
+  "landing_interface.jpg",
   "main_interface.jpg",
   "https://images.unsplash.com/photo-1562877961-efcec8439f9d?q=80&w=2127&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   // Add as many steps as you need
@@ -71,7 +71,7 @@ export default function HowItWorksPage() {
                     <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-[#FFB400] rounded-full opacity-20"></div>
                     <div className="relative bg-white p-6 rounded-xl shadow-lg border border-[#F0F0F0]">
                       <img
-                        src="/placeholder.svg?height=300&width=300"
+                        src="https://images.unsplash.com/photo-1674027444485-cec3da58eef4?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                         alt="AI Detection Technology"
                         width={300}
                         height={300}

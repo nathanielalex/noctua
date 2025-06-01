@@ -32,14 +32,14 @@ export default function LandingPage() {
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
                   <Button
-                    className="bg-[#00B8D9] hover:bg-[#00B8D9]/90 text-white"
+                    className="bg-[#00B8D9] hover:bg-[#00B8D9]/90 text-white cursor-pointer"
                     onClick={handleClick}
                   >
                     Try Now
                   </Button>
                   <Button
                     variant="outline"
-                    className="border-[#A8D0E6] text-[#333333]"
+                    className="border-[#A8D0E6] text-[#333333] cursor-pointer"
                     onClick={() => navigate("/how-it-works")}
                   >
                     Learn More
@@ -177,7 +177,7 @@ export default function LandingPage() {
                 </div>
                 <div>
                   <Button
-                    className="bg-[#00B8D9] hover:bg-[#00B8D9]/90 text-white"
+                    className="bg-[#00B8D9] hover:bg-[#00B8D9]/90 text-white cursor-pointer"
                     onClick={() => navigate("/how-it-works")}
                   >
                     Learn About Our Technology
