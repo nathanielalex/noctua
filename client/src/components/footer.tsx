@@ -10,17 +10,17 @@ export default function Footer() {
           <span className="text-lg font-semibold text-[#333333]">Noctua</span>
         </div>
         <p className="text-center text-sm text-[#333333] md:text-left">
-          © {new Date().getFullYear()} Noctua. All rights reserved.
+          2025 Noctua.
         </p>
         <div className="flex gap-4">
           <Link to="#" className="text-sm text-[#333333] hover:text-[#00B8D9]">
-            Privacy
+            Instagram
           </Link>
           <Link to="#" className="text-sm text-[#333333] hover:text-[#00B8D9]">
-            Terms
+            YouTube
           </Link>
           <Link to="#" className="text-sm text-[#333333] hover:text-[#00B8D9]">
-            Contact
+            LinkedIn
           </Link>
         </div>
       </div>

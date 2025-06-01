@@ -1,7 +1,6 @@
 import { Heart, Shield, Target } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import Layout from "@/components/Layout";
-import { useNavigate } from "react-router-dom";
+import PromoSection from "@/components/promosection";
 
 interface ValueCardProps {
   icon: React.ReactNode;
@@ -17,7 +16,6 @@ interface TeamMemberProps {
 }
 
 export default function AboutPage() {
-  const navigate = useNavigate();
   return (
     <div className="flex min-h-screen flex-col bg-white">
       <Layout>
@@ -38,12 +36,11 @@ export default function AboutPage() {
             </div>
           </section>
 
-          {/* Company Story */}
           <section className="w-full py-12 md:py-24 lg:py-32">
             <div className="container px-4 md:px-6">
               <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
                 <div className="flex flex-col justify-center space-y-4">
-                  <div className="space-y-4 pl-10">
+                  <div className="space-y-4">
                     <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl text-[#333333]">
                       Our Story
                     </h2>
@@ -154,33 +151,7 @@ export default function AboutPage() {
           </section>
 
           <section className="w-full py-12 md:py-24 lg:py-32 bg-[#A8D0E6]/20">
-            <div className="container px-4 md:px-6">
-              <div className="flex flex-col items-center justify-center space-y-4 text-center">
-                <div className="space-y-2">
-                  <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-[#333333]">
-                    Ready to Drive Safer?
-                  </h2>
-                  <p className="max-w-[600px] text-[#333333] md:text-xl/relaxed">
-                    Use Noctua to stay safe on the road.
-                  </p>
-                </div>
-                <div className="flex flex-col gap-4 min-[400px]:flex-row">
-                  <Button
-                    className="bg-[#00B8D9] hover:bg-[#00B8D9]/90 text-white h-14 px-8"
-                    onClick={() => navigate("/monitor")}
-                  >
-                    Try Noctua
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="border-[#A8D0E6] text-[#333333] h-14 px-8"
-                    onClick={() => navigate("/how-it-works")}
-                  >
-                    Learn How It Works
-                  </Button>
-                </div>
-              </div>
-            </div>
+            <PromoSection />
           </section>
         </main>
       </Layout>

@@ -65,7 +65,7 @@ export default function MobileNav() {
                 className="w-full bg-[#00B8D9] hover:bg-[#00B8D9]/90 text-white"
                 onClick={() => navigate("/monitor")}
               >
-                Download App
+                Try Now
               </Button>
             </div>
           </nav>

@@ -51,7 +51,7 @@ export default function LandingPage() {
                   <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-1/3 h-6 bg-[#333333] rounded-b-xl"></div>
                   <div className="w-full h-full bg-[#A8D0E6] rounded-[28px] overflow-hidden flex items-center justify-center">
                     <img
-                      src="/placeholder.svg?height=600&width=300"
+                      src="main_interface.jpg"
                       alt="Noctua App Interface"
                       width={300}
                       height={600}
@@ -148,20 +148,16 @@ export default function LandingPage() {
                       </div>
                       <ul className="space-y-2">
                         <StatItem
-                          value="100,000+"
-                          description="Crashes caused by drowsy driving each year"
+                          value="90,000+"
+                          description="Crashes caused by drowsy driving each year in the US"
                         />
                         <StatItem
-                          value="1,550+"
-                          description="Annual fatalities due to drowsy driving"
+                          value="50,000+"
+                          description="People injured in drowsy driving crashes annually"
                         />
                         <StatItem
-                          value="71%"
-                          description="Of adults drive despite feeling sleepy"
-                        />
-                        <StatItem
-                          value="24 hrs"
-                          description="Awake = same impairment as legal alcohol limit"
+                          value="693"
+                          description="Deaths in the US caused by drowsy driving in 2022"
                         />
                       </ul>
                     </div>
@@ -169,19 +165,14 @@ export default function LandingPage() {
                 </div>
               </div>
               <div className="flex flex-col justify-center space-y-4">
-                <div className="space-y-2">
+                <div className="space-y-6">
                   <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-[#333333]">
                     Safety is Our Priority
                   </h2>
                   <p className="text-[#333333] md:text-xl">
-                    Drowsy driving is as dangerous as drunk driving. Noctua uses
-                    advanced AI to detect the early signs of drowsiness before
-                    an accident can happen.
-                  </p>
-                  <p className="text-[#333333] md:text-xl">
-                    Our technology monitors eye movement, blink rate, head
-                    position, and other key indicators to identify when you're
-                    getting too tired to drive safely.
+                    Drowsy driving can be as dangerous as drunk driving. Noctua
+                    uses AI to detect the early signs of drowsiness before an
+                    accident can happen.
                   </p>
                 </div>
                 <div>
