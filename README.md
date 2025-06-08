@@ -2,7 +2,7 @@
 
 **Noctua** is a full-stack project that combines a **React + TypeScript + Vite** frontend with a **Flask** backend to help drivers stay awake during when driving.
 
-🌐 **Live Demo (Frontend Only)**: [noctua-khaki.vercel.app](https://noctua-khaki.vercel.app/)
+🌐 **Live Demo (Frontend Only)**: [noctua-khaki.vercel.app](https://noctua-khaki.vercel.app/)  
 ⚠️ **Note**: The backend is not deployed. To fully experience the app, you must run the backend locally.
 
 ---
